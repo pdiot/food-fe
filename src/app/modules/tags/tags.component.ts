@@ -35,7 +35,6 @@ export class TagsComponent {
     deleteTag(tag: TagModel): void {
         this.tagsRepository.deleteTag(tag._id).subscribe({
             next: () => {
-                console.log('next deleted')
                 this.loadTags();
             },
             error: (error) => {
