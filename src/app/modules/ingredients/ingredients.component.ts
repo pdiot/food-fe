@@ -22,6 +22,8 @@ export class IngredientsComponent {
     refreshIngredientsSubject = new BehaviorSubject<undefined>(undefined);
     ingredients$?: Observable<IngredientModel[]> = this.refreshIngredientsSubject.asObservable().pipe(switchMap(() => this.ingredientRepository.getAllIngredients()));
 
+    currentIngredientForEdit?: IngredientModel;
+
     constructor() {
         this.loadIngredients();
     }
@@ -39,6 +41,10 @@ export class IngredientsComponent {
                 console.error(error);
             }
         });
+    }
+
+    setupIngredientForEdit(ingredient: IngredientModel): void {
+        this.currentIngredientForEdit = ingredient;
     }
 
 }

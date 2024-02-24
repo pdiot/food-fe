@@ -21,6 +21,7 @@ export class TagsComponent {
     refreshTagsSubject = new BehaviorSubject<undefined>(undefined);
     tags$?: Observable<TagModel[]> = this.refreshTagsSubject.asObservable().pipe(switchMap(() => this.tagsRepository.getAllTags()));
 
+    currentEditTag?: TagModel;
     xMarkIcon = faCircleXmark;
     tagsIcon = faTags;
 
@@ -41,5 +42,9 @@ export class TagsComponent {
                 console.error(error);
             }
         });
+    }
+
+    setupFormForEdit(tag: TagModel): void {
+        this.currentEditTag = tag;
     }
 }

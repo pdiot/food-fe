@@ -11,4 +11,5 @@ export class PipComponent {
     @Input() icon?: IconProp;
     @Input() color?: string;
     @Output() iconClick = new EventEmitter<void>();
+    @Output() labelClick = new EventEmitter<void>();
 }

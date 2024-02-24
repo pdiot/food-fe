@@ -5,7 +5,7 @@
     </div>
         <div class="col-12" #newTag>
             <div class="card">
-                <app-tag-form (saved)="loadTags()"></app-tag-form>
+                <app-tag-form (saved)="loadTags()" [tag]="currentEditTag"></app-tag-form>
             </div> 
         </div>        
      
@@ -17,7 +17,7 @@
             <div class="pip-list">
                 @for (tag of (tags$ | async); track $index) {
                     <div class="tag-item">
-                        <app-pip [label]="tag.label" [color]="tag.color" [icon]="xMarkIcon" (iconClick)="deleteTag(tag)"></app-pip>
+                        <app-pip [label]="tag.label" [color]="tag.color" [icon]="xMarkIcon" (iconClick)="deleteTag(tag)" (labelClick)="setupFormForEdit(tag)"></app-pip>
                     </div>
                 }
             </div>

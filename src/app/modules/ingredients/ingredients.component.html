@@ -5,7 +5,7 @@
     </div>
         <div class="col-12" #newTag>
             <div class="card">
-                <app-ingredient-form (saved)="loadIngredients()"></app-ingredient-form>
+                <app-ingredient-form (saved)="loadIngredients()" [ingredient]="currentIngredientForEdit"></app-ingredient-form>
             </div> 
         </div>        
      
@@ -17,7 +17,7 @@
             <div class="pip-list">
                 @for (ingredient of (ingredients$ | async); track $index) {
                     <div class="tag-item">
-                        <app-pip [label]="ingredient.label" [icon]="xMarkIcon" (iconClick)="deleteIngredient(ingredient)"></app-pip>
+                        <app-pip [label]="ingredient.label" [icon]="xMarkIcon" (iconClick)="deleteIngredient(ingredient)" (labelClick)="setupIngredientForEdit(ingredient)" ></app-pip>
                     </div>
                 }
             </div>

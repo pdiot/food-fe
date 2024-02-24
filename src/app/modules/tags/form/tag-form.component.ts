@@ -30,10 +30,12 @@ export class TagFormComponent implements OnChanges {
         this.formGroup.reset({
             color: generateRandomHexaColor()
         });
+        this.tag = undefined;
     }
 
     saveTag(): void {
-        this.tagsRepository.createTag(this.formGroup.value).subscribe({
+        const repositoryCall$ = this.tag ? this.tagsRepository.patchTag(this.tag._id, this.formGroup.value) : this.tagsRepository.createTag(this.formGroup.value);
+        repositoryCall$.subscribe({
             next: (newTag) => {
                 this.resetForm();
                 this.saved.emit(newTag);

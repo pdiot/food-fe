@@ -27,10 +27,14 @@ export class IngredientFormComponent implements OnChanges {
 
     resetForm(): void {
         this.formGroup.reset();
+        this.ingredient = undefined;
     }
 
     saveIngredient(): void {
-        this.ingredientsRepository.createIngredient(this.formGroup.value).subscribe({
+        const repositoryCall$ = this.ingredient ? this.ingredientsRepository.patchIngredient(this.ingredient._id, this.formGroup.value) :
+            this.ingredientsRepository.createIngredient(this.formGroup.value)
+
+        repositoryCall$.subscribe({
             next: (newIngredient) => {
                 this.resetForm();
                 this.saved.emit(newIngredient);
