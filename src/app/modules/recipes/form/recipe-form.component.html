@@ -29,13 +29,13 @@
                     <div class="col-6">
                         <div class="field">
                             <label for="recipeTags">Tags</label>
-                            TODO sélection de tags
+                            <app-multiselect [multiselectFormControl]="formGroup.controls.tags" [inputId]="'recipeTags'"
+                                [placeholder]="'Ajouter un tag'" [options]="tags"></app-multiselect>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="field">
                             <label for="recipeIngredients">Ingrédients</label>
-                            TODO sélection d'ingrédients
                         </div>
                     </div>
                     <div class="col-12">
@@ -48,6 +48,8 @@
             </div>
         </form>
     </div>
+
+    <div style="height: 250px;"></div>
 </div>
 <div class="footer">
     <button class="secondary" (click)="backToRecipes()">Annuler</button>

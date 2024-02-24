@@ -1,0 +1,20 @@
+@import 'variables.scss';
+
+.multiselect-overlay {
+    position: absolute;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.multiselect-item {
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    background-color: $lighter;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    span {
+        text-wrap: nowrap;
+    }
+}
