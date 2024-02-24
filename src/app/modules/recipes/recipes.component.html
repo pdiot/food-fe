@@ -1,0 +1,104 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card title-card flex justify-content-left align-items-center gap-1 ">
+            <fa-icon [icon]="recipesIcon"></fa-icon>
+            <p> Recettes </p>
+            <div class="flex w-full"></div>
+            <div class="flex justify-content-right align-items-center width-15">
+                <button class="btn btn-primary" (click)="addNewRecipe()">
+                    <fa-icon [icon]="plusIcon"></fa-icon>
+                    Ajouter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12" #list>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Liste des recettes</div>
+            </div>
+            <div class="recipe-list flex w-full">
+                <table class="w-full">
+                    <tr>
+                        <th scope="col" class="width-15">
+                            <div class="flex align-items-center justify-content-left">
+                                Nom
+                            </div>
+                        </th>
+                        <th scope="col" class="width-10">
+                            <div class="flex align-items-center justify-content-left">
+                                Portions
+                            </div>
+                        </th>
+                        <th scope="col" class="width-15">
+                            <div class="flex align-items-center justify-content-left">
+                                Tags
+                            </div>
+                        </th>
+                        <th scope="col" class="width-20">
+                            <div class="flex align-items-center justify-content-left">
+                                Ingrédients
+                            </div>
+                        </th>
+                        <th scope="col" class="width-15">
+                            <div class="flex align-items-center justify-content-left">
+                                Prix / portion
+                            </div>
+                        </th>
+                        <th scope="col" class="width-25">
+                            <div class="flex align-items-center justify-content-left">
+                                Calories / portion
+                            </div>
+                        </th>
+                    </tr>
+                    @for (recipe of (recipes$ | async); track $index) {
+                    <tr class="clickable" (click)="editRecipe(recipe)">
+                        <td class="width-15">
+                            <div class="flex align-items-center justify-content-left">
+                                {{recipe.label}}
+                            </div>
+                        </td>
+                        <td class="width-10">
+                            <div class="flex align-items-center justify-content-left">{{recipe.servings}}
+                            </div>
+                        </td>
+                        <!-- Tags -->
+                        <td class="width-20">
+                            <div class="flex align-items-center justify-content-left">
+                                @for (tag of recipe.tags; track $index) {
+                                <div class="tag-pip">
+                                    <app-pip [label]="tag.label" [color]="tag.color" [disableHover]="true"></app-pip>
+                                </div>
+                                }
+                            </div>
+                        </td>
+                        <!-- Ingredients -->
+                        <td class="width-20">
+                            <div class="flex align-items-center justify-content-left">
+                                @for (ingredientAsso of recipe.ingredients; track $index) {
+                                <div class="ingredient-pip">
+                                    <app-pip [disableHover]="true" [label]="ingredientAsso.ingredient.label">
+                                    </app-pip>
+                                </div>
+                                }
+                            </div>
+                        </td>
+                        <td class="width-15">
+                            <div class="flex align items-center justify-content-left">
+                                {{getPrice(recipe) | number : '1.2-2'}} €
+                            </div>
+                        </td>
+                        <td class="width-25">
+                            <div class="flex align items-center justify-content-left">
+                                {{getCalories(recipe) | number : '1.2-2'}} cal
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

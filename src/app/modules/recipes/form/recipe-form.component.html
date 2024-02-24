@@ -1,0 +1,56 @@
+@if (formGroup) {
+<div class="grid">
+    <div class="col-12">
+        <div class="card title-card flex align-items-center justify-content-left gap-1">
+            <fa-icon [icon]="titleIcon"></fa-icon>
+            @if (recipe) {
+            <p> Modifier la recette de {{formGroup.controls.label.value}}</p>
+            } @else {
+            <p> Nouvelle recette</p>
+            }
+        </div>
+    </div>
+    <div class="col-12">
+        <form [formGroup]="formGroup" (ngSubmit)="saveRecipe()">
+            <div class="card flex">
+                <div class="grid w-full">
+                    <div class="col-6">
+                        <div class="field">
+                            <label for="recipeLabel">Nom de la recette</label>
+                            <input type="text" id="recipeLabel" [formControl]="formGroup.controls.label" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="field">
+                            <label for="recipeServings">Nombre de portions</label>
+                            <input type="number" id="recipeServings" [formControl]="formGroup.controls.servings" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="field">
+                            <label for="recipeTags">Tags</label>
+                            TODO sélection de tags
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="field">
+                            <label for="recipeIngredients">Ingrédients</label>
+                            TODO sélection d'ingrédients
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="field">
+                            <label for="recipeDescription">Description de la recette</label>
+                            <textarea id="recipeDescription" [formControl]="formGroup.controls.description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="footer">
+    <button class="secondary" (click)="backToRecipes()">Annuler</button>
+    <button class="primary" (click)="saveRecipe()">{{recipe ? 'Mettre à jour' : 'Créer recette'}}</button>
+</div>
+}

@@ -10,6 +10,7 @@ export class PipComponent {
     @Input() label!: string;
     @Input() icon?: IconProp;
     @Input() color?: string;
+    @Input() disableHover = false;
     @Output() iconClick = new EventEmitter<void>();
     @Output() labelClick = new EventEmitter<void>();
 }

@@ -1,12 +1,14 @@
 .app-title-bar {
     display: flex;
     align-items: center;
+
     h3 {
         margin: 0;
     }
 
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
 
     margin-bottom: 1rem;
 }

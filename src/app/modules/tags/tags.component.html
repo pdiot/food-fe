@@ -1,14 +1,17 @@
 <div class="grid">
-    <div class="col-12 flex justify-content-left align-items-center gap-1" #tags>
-        <fa-icon [icon]="tagsIcon"></fa-icon>
-        <p> Tags </p>
+    <div class="col-12">
+
+        <div class="card title-card flex justify-content-left align-items-center gap-1 ">
+            <fa-icon [icon]="tagsIcon"></fa-icon>
+            <p> Tags </p>
+        </div>
     </div>
-        <div class="col-12" #newTag>
-            <div class="card">
-                <app-tag-form (saved)="loadTags()" [tag]="currentEditTag"></app-tag-form>
-            </div> 
-        </div>        
-     
+    <div class="col-12">
+        <div class="card">
+            <app-tag-form (saved)="loadTags()" [tag]="currentEditTag"></app-tag-form>
+        </div>
+    </div>
+
     <div class="col-12" #list>
         <div class="card">
             <div class="card-header">
@@ -16,9 +19,10 @@
             </div>
             <div class="pip-list">
                 @for (tag of (tags$ | async); track $index) {
-                    <div class="tag-item">
-                        <app-pip [label]="tag.label" [color]="tag.color" [icon]="xMarkIcon" (iconClick)="deleteTag(tag)" (labelClick)="setupFormForEdit(tag)"></app-pip>
-                    </div>
+                <div class="tag-item">
+                    <app-pip [label]="tag.label" [color]="tag.color" [icon]="xMarkIcon" (iconClick)="deleteTag(tag)"
+                        (labelClick)="setupFormForEdit(tag)"></app-pip>
+                </div>
                 }
             </div>
         </div>

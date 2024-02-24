@@ -1,14 +1,17 @@
 <div class="grid">
-    <div class="col-12 flex justify-content-left align-items-center gap-1" #tags>
-        <fa-icon [icon]="ingredientsIcon"></fa-icon>
-        <p> Ingrédients </p>
+    <div class="col-12">
+        <div class="card title-card flex justify-content-left align-items-center gap-1 ">
+            <fa-icon [icon]="ingredientsIcon"></fa-icon>
+            <p> Ingrédients </p>
+        </div>
     </div>
-        <div class="col-12" #newTag>
-            <div class="card">
-                <app-ingredient-form (saved)="loadIngredients()" [ingredient]="currentIngredientForEdit"></app-ingredient-form>
-            </div> 
-        </div>        
-     
+    <div class="col-12">
+        <div class="card">
+            <app-ingredient-form (saved)="loadIngredients()"
+                [ingredient]="currentIngredientForEdit"></app-ingredient-form>
+        </div>
+    </div>
+
     <div class="col-12" #list>
         <div class="card">
             <div class="card-header">
@@ -16,9 +19,10 @@
             </div>
             <div class="pip-list">
                 @for (ingredient of (ingredients$ | async); track $index) {
-                    <div class="tag-item">
-                        <app-pip [label]="ingredient.label" [icon]="xMarkIcon" (iconClick)="deleteIngredient(ingredient)" (labelClick)="setupIngredientForEdit(ingredient)" ></app-pip>
-                    </div>
+                <div class="tag-item">
+                    <app-pip [label]="ingredient.label" [icon]="xMarkIcon" (iconClick)="deleteIngredient(ingredient)"
+                        (labelClick)="setupIngredientForEdit(ingredient)"></app-pip>
+                </div>
                 }
             </div>
         </div>
