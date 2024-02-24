@@ -18,6 +18,7 @@ export interface IngredientRecipeAssociation {
 }
 
 export interface RecipeModelPost {
+    _id: string;
     label: string;
     description?: string;
     servings: number;
@@ -43,7 +44,7 @@ export class RecipeFormSchema {
         this.description = new FormControl<string | undefined>(recipe?.description ?? undefined, { nonNullable: true });
         this.servings = new FormControl<number | undefined>(recipe?.servings ?? undefined, { nonNullable: true });
         this.ingredients = new FormArray<FormGroup<IngredientRecipeAssociationFormSchema | undefined>>([]);
-        this.tags = new FormControl<TagModel[] | undefined>(recipe?.tags ?? undefined, { nonNullable: true });
+        this.tags = new FormControl<TagModel[] | undefined>(recipe?.tags ?? [], { nonNullable: true });
 
         if (recipe?.ingredients) {
             recipe.ingredients.forEach(ingredient => {
@@ -54,10 +55,12 @@ export class RecipeFormSchema {
         this.ingredients.valueChanges.pipe(startWith(this.ingredients.value)).subscribe((value) => {
             if (value.length === 0) {
                 this.ingredients.push(new FormGroup<IngredientRecipeAssociationFormSchema | undefined>(new IngredientRecipeAssociationFormSchema()));
-            } else if (value.filter((ingAsso) => ingAsso?.ingredient === undefined || ingAsso?.quantity === undefined).length === 0) {
+            } else if (value.filter((ingAsso) => (ingAsso?.ingredient === undefined || ingAsso?.ingredient === null) || (ingAsso?.quantity === undefined || ingAsso?.quantity === null)).length === 0) {
                 this.ingredients.push(new FormGroup<IngredientRecipeAssociationFormSchema | undefined>(new IngredientRecipeAssociationFormSchema()));
             }
         });
+
+        this.ingredients.updateValueAndValidity();
     }
 }
 

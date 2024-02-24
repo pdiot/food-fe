@@ -14,20 +14,30 @@ import { memo } from "../../../../utils/memo.function";
         {
             <div class="placeholder"> {{placeholder}}</div>
         } @else {
-            @for (item of multiselectFormControl.value; track $index) {
-                @if ($index < 3) {
-                    <div class="multiselect-item" style="{{item.color ? 'background-color: ' + item.color : ''}}">
-                        <span> {{item[optionLabel ?? 'label']}} </span>
-                        
-                        <fa-icon [icon]="xIcon" (click)="removeItem(optionValue ? item[optionValue] : item)" class="clickable"></fa-icon>
+            @if (!singleSelectMode) {
+                <!-- multiselect -->
+                @for (item of multiselectFormControl.value; track $index) {
+                    @if ($index < 3) {
+                        <div class="multiselect-item" style="{{item.color ? 'background-color: ' + item.color : ''}}">
+                            <span> {{item[optionLabel ?? 'label']}} </span>
+                            
+                            <fa-icon [icon]="xIcon" (click)="removeItem(optionValue ? item[optionValue] : item)" class="clickable"></fa-icon>
+                        </div>
+                    }                
+                }
+                @if (multiselectFormControl.value && multiselectFormControl.value.length > 3) {
+                    <div class="multiselect-item">
+                        <span>+{{multiselectFormControl.value.length - 3}} ... </span>
                     </div>
-                }                
-            }
-            @if (multiselectFormControl.value && multiselectFormControl.value.length > 3) {
-                <div class="multiselect-item">
-                    <span>+{{multiselectFormControl.value.length - 3}} ... </span>
+                }
+            } @else {
+                <!--  single select -->
+                <div class="multiselect-item" style="{{multiselectFormControl.value.color ? 'background-color: ' + multiselectFormControl.value.color : ''}}">
+                    <span> {{multiselectFormControl.value[optionLabel ?? 'label']}} </span>
+                    <fa-icon [icon]="xIcon" (click)="removeItem(multiselectFormControl.value)" class="clickable"></fa-icon>
                 </div>
             }
+        }
             <div class="flex w-full"></div>
             <div class="flex justify-content-right">
                 <div class="chevron">
@@ -38,7 +48,6 @@ import { memo } from "../../../../utils/memo.function";
                     }
                 </div>
             </div>
-        }
     </div>
 
     <div class="multiselect-backdrop" *ngIf="expanded" (click)="expanded = false">
@@ -49,7 +58,7 @@ import { memo } from "../../../../utils/memo.function";
             @if(options && options.length > 0) {
                 @for (item of options; track $index) {
                     <div class="flex w-full clickable option-item" (click)="toggleSelection(item)">
-                    @if (multiselectFormControl.value) {
+                    @if (multiselectFormControl.value && !singleSelectMode) {
                         <input type="checkbox" [checked]="isIncluded(item, multiselectFormControl.value)" class="clickable">
                     }
                         {{ item[optionLabel ?? 'label'] }}
@@ -66,7 +75,7 @@ import { memo } from "../../../../utils/memo.function";
 `
 })
 export class MultiselectComponent {
-    @Input() multiselectFormControl!: FormControl<any[]> | FormControl<any[] | undefined>;
+    @Input() multiselectFormControl!: FormControl<any[]> | FormControl<any[] | undefined> | FormControl<any>;
     @Input() options!: any[];
     @Input() placeholder?: string;
     @Input() inputId?: string;
@@ -74,6 +83,7 @@ export class MultiselectComponent {
     @Input() optionValue?: string;
     @Input() maxHeight = '300px';
     @Input() width = '800px';
+    @Input() singleSelectMode = false;
 
     @Output() selectedCreateNew = new EventEmitter<void>();
 
@@ -98,9 +108,15 @@ export class MultiselectComponent {
 
     removeItem(item: any): void {
         if (this.multiselectFormControl.value) {
-            const index = this.findIndex(item, this.multiselectFormControl.value);
-            if (index !== -1) {
-                this.multiselectFormControl.setValue(this.multiselectFormControl.value.filter((item, i) => i !== index));
+            if (this.singleSelectMode) {
+                const fc = this.multiselectFormControl as FormControl<any | undefined>;
+                fc.setValue(undefined);
+            } else {
+                const fc = this.multiselectFormControl as FormControl<any[]>;
+                const index = this.findIndex(item, fc.value);
+                if (index !== -1) {
+                    fc.setValue(fc.value.filter((item, i) => i !== index));
+                }
             }
         }
     }
@@ -111,13 +127,22 @@ export class MultiselectComponent {
             this.expanded = false;
             return;
         }
-        if (this.multiselectFormControl.value) {
-            const index = this.findIndex(item, this.multiselectFormControl.value);
-            if (index !== -1) {
-                this.multiselectFormControl.setValue(this.multiselectFormControl.value.filter((i, iIndex) => iIndex !== index));
+        if (this.multiselectFormControl) {
+            if (this.singleSelectMode) {
+                const fc = this.multiselectFormControl as FormControl<any | undefined>;
+                fc.setValue(item);
+                this.expanded = false;
             } else {
-                this.multiselectFormControl.setValue([...this.multiselectFormControl.value, item]);
+                const fc = this.multiselectFormControl as FormControl<any[]>;
+                const index = this.findIndex(item, this.multiselectFormControl.value);
+                if (index !== -1) {
+                    fc.setValue(fc.value.filter((i, iIndex) => iIndex !== index));
+                } else {
+                    fc.setValue([...fc.value, item]);
+                }
+
             }
+
         }
     }
 }

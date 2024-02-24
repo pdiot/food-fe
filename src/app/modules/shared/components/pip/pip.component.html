@@ -1,8 +1,8 @@
 <div class="flex align-items-center justify-content-center pip primary-bg"
     [style]="color ? 'background-color: ' + color + ';' : ''" [ngClass]="{ 'enable-hover' : !disableHover}">
-    <div class="flex label" (click)="labelClick.emit()">
+    <span class="pip-span" (click)="labelClick.emit()">
         {{label}}
-    </div>
+    </span>
     @if (icon) {
     <div class="icon">
         <fa-icon [icon]="icon" (click)="iconClick.emit()"></fa-icon>

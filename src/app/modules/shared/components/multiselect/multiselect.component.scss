@@ -9,6 +9,11 @@
     border-radius: 0.25rem;
     background-color: $lighter;
 
+    .placeholder {
+        opacity: 0.5;
+        text-wrap: nowrap;
+    }
+
     .chevron {
         border-left: 1px solid $dark;
         padding: 1rem;

@@ -13,6 +13,7 @@ import { NgChanges } from "../../../utils/typed-on-changes.util";
 })
 export class IngredientFormComponent implements OnChanges {
     @Output() saved = new EventEmitter<IngredientModel>();
+    @Output() canceled = new EventEmitter<void>();
 
     @Input() ingredient?: IngredientModel;
 
@@ -23,6 +24,11 @@ export class IngredientFormComponent implements OnChanges {
         if (changes.ingredient?.currentValue) {
             this.formGroup.reset(changes.ingredient.currentValue);
         }
+    }
+
+    cancel(): void {
+        this.canceled.emit();
+        this.resetForm();
     }
 
     resetForm(): void {

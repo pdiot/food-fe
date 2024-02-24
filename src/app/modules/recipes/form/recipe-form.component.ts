@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RecipeRepositoryService } from "../../../repositories/recipe.service";
-import { RecipeFormSchema, RecipeModel } from "../../../models/recipe.model";
+import { IngredientRecipeAssociation, IngredientRecipeAssociationFormSchema, RecipeFormSchema, RecipeModel, RecipeModelPost } from "../../../models/recipe.model";
 import { FormGroup } from "@angular/forms";
 import { Observable, filter } from "rxjs";
 import { SharedModule } from "../../shared/shared.module";
@@ -12,10 +12,12 @@ import { DropdownModel } from "../../../utils/form.utils";
 import { TagModel } from "../../../models/tag.model";
 import { IDropdownSettings } from "ng-multiselect-dropdown";
 import { TagFormComponent } from "../../tags/form/tag-form.component";
+import { RecipeIngredientAssociationFormComponent } from "../recipe-ingredient-association-form/recipe-ingredient-association-form.component";
+import { IngredientModel } from "../../../models/ingredient.model";
 
 @Component({
     standalone: true,
-    imports: [SharedModule, TagFormComponent],
+    imports: [SharedModule, TagFormComponent, RecipeIngredientAssociationFormComponent],
     providers: [RecipeRepositoryService, TagRepositoryService, IngredientRepositoryService],
     selector: "app-recipe-form",
     templateUrl: "./recipe-form.component.html",
@@ -28,19 +30,9 @@ export class RecipeFormComponent {
 
     private recipeRepositoryService = inject(RecipeRepositoryService);
     private tagRepositoryService = inject(TagRepositoryService);
-    private ingredientRepositoryService = inject(IngredientRepositoryService);
     titleIcon = faBookOpen;
 
     tags: Partial<TagModel>[] = [];
-    tagDropdownSettings: IDropdownSettings = {
-        singleSelection: false,
-        idField: '_id',
-        textField: 'label',
-        enableCheckAll: false,
-        itemsShowLimit: 3,
-        allowSearchFilter: true
-    }
-    ingredientDropdowns: DropdownModel[] = [];
 
     recipe?: RecipeModel;
 
@@ -63,7 +55,6 @@ export class RecipeFormComponent {
             this.createForm();
         }
         this.loadTagDropdowns();
-        this.loadIngredientDropdowns();
     }
 
     loadTagDropdowns(): void {
@@ -88,36 +79,8 @@ export class RecipeFormComponent {
         }
     }
 
-    loadIngredientDropdowns(): void {
-        this.ingredientRepositoryService.getAllIngredients().subscribe({
-            next: (ingredients) => {
-                this.ingredientDropdowns = [{
-                    item_id: 'create_new',
-                    item_text: 'Créer un nouvel ingrédient'
-                }];
-                this.ingredientDropdowns.push(...ingredients.map(ingredient => ({ item_id: ingredient._id, item_text: ingredient.label })));
-            },
-            error: (error) => {
-                console.error(error);
-            }
-        });
-    }
-
     onSelectNewTag(): void {
         this.creatingNewTag = true;
-    }
-
-    watchIngredientSelection(): void {
-        // if (this.formGroup) {
-        //     this.formGroup.controls.ingredients.valueChanges.subscribe((ingredients) => {
-        //         if (!ingredients) return;
-        //         const createNewIndex = ingredients.findIndex(ingAsso => ingAsso === 'create_new');
-        //         if (createNewIndex !== -1) {
-        //             // Create new
-        //             this.formGroup?.controls.ingredients.setValue((ingredients as { ingredient: DropdownModel }[]).filter((ingAsso, index) => index !== createNewIndex));
-        //         }
-        //     });
-        // }
     }
 
     createForm() {
@@ -132,9 +95,9 @@ export class RecipeFormComponent {
         if (this.formGroup) {
             let backEndRequest$: Observable<RecipeModel>;
             if (this.recipe) {
-                backEndRequest$ = this.recipeRepositoryService.patchRecipe(this.recipe._id, this.formGroup.value);
+                backEndRequest$ = this.recipeRepositoryService.patchRecipe(this.recipe._id, this.buildRecipePostData());
             } else {
-                backEndRequest$ = this.recipeRepositoryService.createRecipe(this.formGroup.value);
+                backEndRequest$ = this.recipeRepositoryService.createRecipe(this.buildRecipePostData());
             }
 
             backEndRequest$.subscribe({
@@ -148,6 +111,44 @@ export class RecipeFormComponent {
             });
 
         }
+    }
+
+    buildRecipePostData(): Partial<RecipeModelPost> {
+        if (this.formGroup) {
+            const recipe: Partial<RecipeModelPost> = {
+                label: this.formGroup.controls.label.value,
+                description: this.formGroup.controls.description.value,
+                servings: this.formGroup.controls.servings.value
+            };
+
+            if (this.recipeId) {
+                recipe._id = this.recipeId;
+            }
+
+            if (this.formGroup.controls.ingredients.value.length !== 0) {
+                recipe.ingredientIdsAssos = this.formGroup.controls.ingredients.controls
+                    .filter(ingredientFG =>
+                        ingredientFG && ingredientFG?.value?.ingredient !== undefined
+                        && ingredientFG?.value?.ingredient !== null
+                        && ingredientFG?.value?.quantity !== undefined
+                        && ingredientFG?.value?.quantity !== null
+                    )
+                    .map(ingredientFG => {
+                        const fg = ingredientFG as FormGroup<IngredientRecipeAssociationFormSchema>;
+                        return {
+                            ingredientId: (fg.value.ingredient as IngredientModel)._id,
+                            quantity: fg.value.quantity as number
+                        };
+                    });
+            }
+
+            if (this.formGroup.controls.tags.value) {
+                recipe.tagIds = this.formGroup.controls.tags.value.map((tag: TagModel) => tag._id);
+            }
+
+            return recipe;
+        }
+        return {};
     }
 
 

@@ -6,7 +6,7 @@
 
 * {
     font-family: 'Roboto', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 
 app-root {
@@ -131,6 +131,30 @@ button {
 
 .width-35 {
     width: 35%;
+}
+
+.m-width-10 {
+    max-width: 10%;
+}
+
+.m-width-15 {
+    max-width: 15%;
+}
+
+.m-width-20 {
+    max-width: 20%;
+}
+
+.m-width-25 {
+    max-width: 25%;
+}
+
+.m-width-30 {
+    max-width: 30%;
+}
+
+.m-width-35 {
+    max-width: 35%;
 }
 
 .multiselect-backdrop {

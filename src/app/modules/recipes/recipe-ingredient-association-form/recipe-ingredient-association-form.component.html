@@ -1,0 +1,49 @@
+<div class="grid">
+    @if (formArray && formArray.controls.length > 0) {
+    @for (formGroup of formArray.controls; track $index) {
+    @if (formGroup.controls) {
+    <div class="col-6">
+        <div class="grid">
+            <div class="col-12">
+                <div class="field">
+                    <label for="ingredientLabel_{{$index}}">Ingrédient</label>
+                    <app-multiselect [multiselectFormControl]="formGroup.controls.ingredient"
+                        [inputId]="'ingredient_{{$index}}'" (selectedCreateNew)="onSelectNewIngredient($index)"
+                        [singleSelectMode]="true" [placeholder]="'Ajouter un ingrédient'"
+                        [options]="ingredients"></app-multiselect>
+                </div>
+            </div>
+
+            <div class="col-10">
+                <div class="field">
+                    <label for="ingredientQuantity_{{$index}}">Quantité {{ formGroup.controls.ingredient.value &&
+                        formGroup.controls.ingredient.value.unit ? ' (' + formGroup.controls.ingredient.value.unit + ')'
+                        :
+                        ''
+                        }}</label>
+                    <input type="number" id="ingredientQuantity_{{$index}}"
+                        [formControl]="formGroup.controls.quantity" />
+                </div>
+            </div>
+            <div class="col-2 flex justify-content-end gap-1">
+                <button class="secondary" id="removeIngredient_{{$index}}" (click)="removeIngredient($index)">
+                    <fa-icon [icon]="trashIcon"></fa-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+    }
+    @if (creatingNewIngredient) {
+    <div class="col-12 grid">
+        <!-- TODO transformer ça en modale -->
+        <div class="col-12"> Création d'un nouvel ingrédient</div>
+        <div class="col-12">
+            <app-ingredient-form (saved)="onNewIngredientCreated($event)"
+                (canceled)="resetCreateForm()"></app-ingredient-form>
+        </div>
+    </div>
+    }
+    }
+
+</div>
