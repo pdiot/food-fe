@@ -43,10 +43,11 @@ import { memo } from "../../../../utils/memo.function";
     <div class="multiselect-backdrop" *ngIf="expanded" (click)="expanded = false">
     </div>
     <div class="multiselect-overlay" style="maxHeight: {{maxHeight}}; width: {{width}}" *ngIf="expanded">
-        <div class="flex flex-column multiselect-overlay-panel">
+        <!-- Si je veux ici une searchbar -->
+        <div class="flex flex-column multiselect-overlay-panel" style="maxHeight: {{maxHeight}};">
             @if(options && options.length > 0) {
                 @for (item of options; track $index) {
-                    <div class="flex w-full clickable option-item" style="{{item.color ? 'background-color: ' + item.color : ''}}" (click)="toggleSelection(item)">
+                    <div class="flex w-full clickable option-item" (click)="toggleSelection(item)">
                     @if (multiselectFormControl.value) {
                         <input type="checkbox" [checked]="isIncluded(item, multiselectFormControl.value)" class="clickable">
                     }

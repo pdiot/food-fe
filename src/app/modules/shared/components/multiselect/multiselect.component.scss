@@ -2,7 +2,7 @@
 
 .multiselect-overlay {
     position: absolute;
-    overflow-y: auto;
+    height: fit-content;
     z-index: 1000;
 }
 
@@ -12,6 +12,20 @@
     align-items: center;
     background-color: $lighter;
     padding: 1rem;
+    border-radius: 0.5rem;
+
+    span {
+        text-wrap: nowrap;
+    }
+}
+
+.option-item {
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    background-color: $lighter;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
     border-radius: 0.5rem;
 
     span {
