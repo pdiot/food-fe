@@ -20,7 +20,7 @@ app-root {
 body {
     margin: 0;
     padding: 0;
-    background-color: $tertiary;
+    background-color: $primary;
     color: $dark;
 }
 
@@ -44,6 +44,7 @@ body {
             padding-bottom: 0.5rem;
         }
     }
+    background-color: $secondary;
     box-sizing: border-box;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -79,12 +80,17 @@ button {
     }
 
     &.secondary {
-        background-color: $tertiary;
+        background-color: $secondary;
         color: $dark;
     }
 }
 
 .primary-bg {
     background-color: $primary;
+    color: $dark;
+}
+
+.secondary-bg {
+    background-color: $secondary;
     color: $dark;
 }

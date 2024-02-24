@@ -6,18 +6,17 @@ import { SharedModule } from "../shared/shared.module";
 import { faCircleXmark, faTags } from "@fortawesome/free-solid-svg-icons";
 import { FormGroup } from "@angular/forms";
 import { generateRandomHexaColor } from "../../utils/color.utils";
+import { TagFormComponent } from "./form/tag-form.component";
 
 @Component({
     standalone: true,
     selector: "app-tags",
     providers: [TagRepositoryService],
-    imports: [SharedModule],
+    imports: [SharedModule, TagFormComponent],
     templateUrl: "./tags.component.html",
 })
 export class TagsComponent {
     private tagsRepository: TagRepositoryService = inject(TagRepositoryService);
-
-    formGroup = new FormGroup<TagFormSchema>(new TagFormSchema());
 
     refreshTagsSubject = new BehaviorSubject<undefined>(undefined);
     tags$?: Observable<TagModel[]> = this.refreshTagsSubject.asObservable().pipe(switchMap(() => this.tagsRepository.getAllTags()));
@@ -31,24 +30,6 @@ export class TagsComponent {
 
     loadTags(): void {
         this.refreshTagsSubject.next(undefined);
-    }
-
-    resetForm(): void {
-        this.formGroup.reset({
-            color: generateRandomHexaColor()
-        });
-    }
-
-    saveTag(): void {
-        this.tagsRepository.createTag(this.formGroup.value).subscribe({
-            next: () => {
-                this.resetForm();
-                this.loadTags();
-            },
-            error: (error) => {
-                console.error(error);
-            }
-        });
     }
 
     deleteTag(tag: TagModel): void {
