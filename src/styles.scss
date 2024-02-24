@@ -1,1 +1,90 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeflex/primeflex.css";
+@import "primeflex/themes/primeone-light.css";
+@import "./style/primeflex-overrides.scss";
+@import "./style/variables.scss";
+
+* {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+}
+
+app-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $tertiary;
+    color: $dark;
+}
+
+.router-link {
+    cursor: pointer;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.card {
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .card-title {
+            padding-left: 1rem;
+            padding-bottom: 0.5rem;
+        }
+    }
+    box-sizing: border-box;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.color-picker-input {
+    border-radius: 100%;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.2rem;
+}
+
+.pip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+button {
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(1.1);
+    }
+
+    &.primary {
+        background-color: $primary;
+        color: $dark;
+    }
+
+    &.secondary {
+        background-color: $tertiary;
+        color: $dark;
+    }
+}
+
+.primary-bg {
+    background-color: $primary;
+    color: $dark;
+}

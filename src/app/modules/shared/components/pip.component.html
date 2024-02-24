@@ -1,0 +1,10 @@
+<div class="flex align-items-center justify-content-center pip" [style]="color ? 'background-color: ' + color + ';' : ''">
+    <div class="flex label">
+        {{label}}
+    </div>
+    @if (icon) {
+        <div class="icon">
+            <fa-icon [icon]="icon" (click)="iconClick.emit()"></fa-icon>
+        </div>
+    }
+</div>

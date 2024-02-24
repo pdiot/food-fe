@@ -1,0 +1,10 @@
+<div class="flex flex-column primary-bg h-full p-0 m-0">
+    <div class="col-12" #sidebar>
+        <h3> Super nom </h3>
+    </div>
+    @for (route of routes; track route.label) {
+        <div class="col-12" #sidebar>
+            <div class="flex align-items-center justify-content-left router-link" [routerLink]="route.route">{{route.label}}</div>
+        </div>
+    }
+</div>
