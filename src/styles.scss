@@ -24,6 +24,26 @@ body {
     color: $dark;
 }
 
+.justify-content-center {
+    justify-content: center;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.justify-content-left {
+    justify-content: left;
+}
+
+.justify-content-right {
+    justify-content: right;
+}
+
+
+
+
+
 .router-link {
     cursor: pointer;
 }
