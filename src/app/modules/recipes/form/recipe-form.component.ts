@@ -11,10 +11,11 @@ import { IngredientRepositoryService } from "../../../repositories/ingredient.se
 import { DropdownModel } from "../../../utils/form.utils";
 import { TagModel } from "../../../models/tag.model";
 import { IDropdownSettings } from "ng-multiselect-dropdown";
+import { TagFormComponent } from "../../tags/form/tag-form.component";
 
 @Component({
     standalone: true,
-    imports: [SharedModule],
+    imports: [SharedModule, TagFormComponent],
     providers: [RecipeRepositoryService, TagRepositoryService, IngredientRepositoryService],
     selector: "app-recipe-form",
     templateUrl: "./recipe-form.component.html",
@@ -45,6 +46,8 @@ export class RecipeFormComponent {
 
     formGroup?: FormGroup<RecipeFormSchema>;
 
+    creatingNewTag = false;
+
     constructor() {
         if (this.recipeId) {
             this.recipeRepositoryService.getRecipeById(this.recipeId).subscribe({
@@ -61,9 +64,6 @@ export class RecipeFormComponent {
         }
         this.loadTagDropdowns();
         this.loadIngredientDropdowns();
-
-        this.watchTagSelection();
-        // this.watchIngredientSelection();
     }
 
     loadTagDropdowns(): void {
@@ -78,6 +78,14 @@ export class RecipeFormComponent {
                 console.error(error);
             }
         });
+    }
+
+    onNewTagCreated(tag: TagModel): void {
+        if (this.formGroup && this.formGroup.controls.tags.value) {
+            this.formGroup.controls.tags.setValue([...this.formGroup.controls.tags.value, tag]);
+            this.creatingNewTag = false;
+            this.loadTagDropdowns();
+        }
     }
 
     loadIngredientDropdowns(): void {
@@ -95,17 +103,8 @@ export class RecipeFormComponent {
         });
     }
 
-    watchTagSelection(): void {
-        if (this.formGroup) {
-            this.formGroup.controls.tags.valueChanges.subscribe((tags) => {
-                if (!tags) return;
-                const createNewIndex = (tags as TagModel[]).findIndex(tag => tag._id === 'create_new');
-                if (createNewIndex !== -1) {
-                    // Create new
-                    this.formGroup?.controls.tags.setValue((tags as TagModel[]).filter((tag, index) => index !== createNewIndex));
-                }
-            });
-        }
+    onSelectNewTag(): void {
+        this.creatingNewTag = true;
     }
 
     watchIngredientSelection(): void {

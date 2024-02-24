@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { faChevronDown, faChevronUp, faCircleXmark, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { memo } from "../../../../utils/memo.function";
@@ -21,11 +21,12 @@ import { memo } from "../../../../utils/memo.function";
                         
                         <fa-icon [icon]="xIcon" (click)="removeItem(optionValue ? item[optionValue] : item)" class="clickable"></fa-icon>
                     </div>
-                } @else {
-                    <div class="multiselect-item">
-                        <span>+{{multiselectFormControl.value!.length - 3}} ... </span>
-                    </div>
-                }
+                }                
+            }
+            @if (multiselectFormControl.value && multiselectFormControl.value.length > 3) {
+                <div class="multiselect-item">
+                    <span>+{{multiselectFormControl.value.length - 3}} ... </span>
+                </div>
             }
             <div class="flex w-full"></div>
             <div class="flex justify-content-right">
@@ -74,13 +75,19 @@ export class MultiselectComponent {
     @Input() maxHeight = '300px';
     @Input() width = '800px';
 
+    @Output() selectedCreateNew = new EventEmitter<void>();
+
     isIncluded = memo((value: any, array: any[]) => {
         const included = this.findIndex(value, array) !== -1
         return included;
     });
 
     private findIndex(value: any, array: any[]): number {
-        return array.findIndex((i) => JSON.stringify(this.optionValue ? i[this.optionValue] : i) === JSON.stringify(value));
+        return array.findIndex((i) => this.sortedStringify(this.optionValue ? i[this.optionValue] : i) === this.sortedStringify(value));
+    }
+
+    private sortedStringify(value: any): string {
+        return JSON.stringify(value, Object.keys(value).sort());
     }
 
     xIcon = faXmark;
@@ -99,6 +106,11 @@ export class MultiselectComponent {
     }
 
     toggleSelection(item: any): void {
+        if (this.optionValue ? item[this.optionValue] === 'create_new' : item._id === 'create_new') {
+            this.selectedCreateNew.emit();
+            this.expanded = false;
+            return;
+        }
         if (this.multiselectFormControl.value) {
             const index = this.findIndex(item, this.multiselectFormControl.value);
             if (index !== -1) {

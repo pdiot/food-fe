@@ -11,42 +11,49 @@
         </div>
     </div>
     <div class="col-12">
-        <form [formGroup]="formGroup" (ngSubmit)="saveRecipe()">
-            <div class="card flex">
-                <div class="grid w-full">
-                    <div class="col-6">
-                        <div class="field">
-                            <label for="recipeLabel">Nom de la recette</label>
-                            <input type="text" id="recipeLabel" [formControl]="formGroup.controls.label" />
-                        </div>
+        <div class="card flex">
+            <div class="grid w-full">
+                <div class="col-6">
+                    <div class="field">
+                        <label for="recipeLabel">Nom de la recette</label>
+                        <input type="text" id="recipeLabel" [formControl]="formGroup.controls.label" />
                     </div>
-                    <div class="col-6">
-                        <div class="field">
-                            <label for="recipeServings">Nombre de portions</label>
-                            <input type="number" id="recipeServings" [formControl]="formGroup.controls.servings" />
-                        </div>
+                </div>
+                <div class="col-6">
+                    <div class="field">
+                        <label for="recipeServings">Nombre de portions</label>
+                        <input type="number" id="recipeServings" [formControl]="formGroup.controls.servings" />
                     </div>
-                    <div class="col-6">
-                        <div class="field">
-                            <label for="recipeTags">Tags</label>
-                            <app-multiselect [multiselectFormControl]="formGroup.controls.tags" [inputId]="'recipeTags'"
-                                [placeholder]="'Ajouter un tag'" [options]="tags"></app-multiselect>
-                        </div>
+                </div>
+                <div class="col-12">
+                    <div class="field">
+                        <label for="recipeTags">Tags</label>
+                        <app-multiselect [multiselectFormControl]="formGroup.controls.tags" [inputId]="'recipeTags'"
+                            (selectedCreateNew)="onSelectNewTag()" [placeholder]="'Ajouter un tag'"
+                            [options]="tags"></app-multiselect>
                     </div>
-                    <div class="col-6">
-                        <div class="field">
-                            <label for="recipeIngredients">Ingrédients</label>
-                        </div>
+                </div>
+                <div class="col-6">
+                    <div class="field">
+                        <label for="recipeIngredients">Ingrédients</label>
                     </div>
+                </div>
+                @if (creatingNewTag) {
+                <div class="col-12 grid">
+                    <div class="col-12"> Création d'un nouveau label</div>
                     <div class="col-12">
-                        <div class="field">
-                            <label for="recipeDescription">Description de la recette</label>
-                            <textarea id="recipeDescription" [formControl]="formGroup.controls.description"></textarea>
-                        </div>
+                        <app-tag-form (saved)="onNewTagCreated($event)"></app-tag-form>
+                    </div>
+                </div>
+                }
+                <div class="col-12">
+                    <div class="field">
+                        <label for="recipeDescription">Description de la recette</label>
+                        <textarea id="recipeDescription" [formControl]="formGroup.controls.description"></textarea>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 
     <div style="height: 250px;"></div>

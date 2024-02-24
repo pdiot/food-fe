@@ -1,5 +1,20 @@
 @import 'variables.scss';
 
+.multiselect-input {
+    border: 1px solid $dark;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: $lighter;
+
+    .chevron {
+        border-left: 1px solid $dark;
+        padding: 1rem;
+    }
+}
+
 .multiselect-overlay {
     position: absolute;
     height: fit-content;
