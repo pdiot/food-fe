@@ -18,11 +18,13 @@
                 <div class="field">
                     <label for="ingredientQuantity_{{$index}}">Quantité {{ formGroup.controls.ingredient.value &&
                         formGroup.controls.ingredient.value.unit ? ' (' + formGroup.controls.ingredient.value.unit + ')'
-                        :
-                        ''
+                        :''
                         }}</label>
-                    <input type="number" id="ingredientQuantity_{{$index}}"
-                        [formControl]="formGroup.controls.quantity" />
+
+                    <div class="input">
+                        <input type="number" id="ingredientQuantity_{{$index}}"
+                            [formControl]="formGroup.controls.quantity" />
+                    </div>
                 </div>
             </div>
             <div class="col-2 flex justify-content-end gap-1">

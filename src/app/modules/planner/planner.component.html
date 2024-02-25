@@ -20,18 +20,84 @@
                 <div class="col-9">
                     <div class="flex flex-column w-full gap-2">
                         @for (plannerDayData of plannerDayDatas; track $index) {
-                        <app-planner-day [data]="plannerDayData"></app-planner-day>
+                        <div class="planner-day">
+                            <div class="grid">
+                                <div class="col-2">
+                                    <div class="flex flex-column gap-1 planner-day-summary">
+                                        <div class="flex">
+                                            <span class="day-label">
+                                                {{plannerDayData.dayLabel }}
+                                            </span>
+                                        </div>
+                                        <div class="calories">
+                                            <span>
+                                                {{getCalories(plannerDayData) | number : '1.2-2'}} cal
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <!-- Midi -->
+                                    <div class="serving-receptor">
+                                        <span class=" time-label">Midi</span>
+                                        <div class="day-servings" cdkDropList id="noon-{{$index}}"
+                                            [cdkDropListData]="plannerDayData.noonServings"
+                                            [cdkDropListConnectedTo]="getConnectedServingsForNoon($index)">
+
+                                            @for (serving of plannerDayData.noonServings; track $index) {
+                                            <div class="serving" cdkDrag
+                                                (cdkDragStarted)="onDragStarted(plannerDayData.noonServings, $index)"
+                                                (cdkDragDropped)="onDropped($event)">
+                                                <span class="recipe-label">
+                                                    {{serving.recipeLabel }}
+                                                    <fa-icon [icon]="xIcon"
+                                                        (click)="removeServingFromDayServingList('noon', $index)"></fa-icon>
+
+                                                </span>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <!-- Soir -->
+                                    <div class="serving-receptor">
+                                        <span class="time-label">Soir</span>
+                                        <div class="day-servings" cdkDropList id="evening-{{$index}}"
+                                            [cdkDropListData]="plannerDayData.eveningServings"
+                                            [cdkDropListConnectedTo]="getConnectedServingsForEvening($index)">
+
+                                            @for (serving of plannerDayData.eveningServings; track $index) {
+                                            <div class="serving" cdkDrag
+                                                (cdkDragStarted)="onDragStarted(plannerDayData.eveningServings, $index)"
+                                                (cdkDragDropped)="onDropped($event)">
+                                                <span class="recipe flex gap-2 clickable">
+                                                    {{serving.recipeLabel }}
+                                                    <fa-icon [icon]="xIcon"
+                                                        (click)="removeServingFromDayServingList('evening', $index)"></fa-icon>
+
+                                                </span>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         }
                     </div>
                 </div>
                 <!-- Liste des portions -->
                 <div class="col-3 portion-list">
-                    <div class="flex flex-column w-full gap-1">
+                    <div class="flex flex-column w-full gap-1" cdkDropList id="availableServings"
+                        [cdkDropListData]="availableServings"
+                        [cdkDropListConnectedTo]="getConnectedServingsForAvailable()">
                         @for (serving of availableServings; track $index) {
-                        <div class="flex">
+                        <div class="flex" cdkDrag (cdkDragStarted)="onDragStarted(availableServings, $index)"
+                            (cdkDragDropped)="onDropped($event)">
                             <span class="recipe flex gap-2 clickable">
                                 {{serving.recipeLabel }}
-                                <fa-icon [icon]="xIcon" (click)="removeServing($index)"></fa-icon>
+                                <fa-icon [icon]="xIcon" (click)="removeServingFromAvailableServing($index)"></fa-icon>
                             </span>
                         </div>
                         }
