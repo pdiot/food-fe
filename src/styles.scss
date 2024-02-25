@@ -71,10 +71,6 @@ body {
     justify-content: right;
 }
 
-
-
-
-
 .router-link {
     cursor: pointer;
 }
@@ -320,4 +316,8 @@ body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.formatted-text {
+    white-space: pre;
 }

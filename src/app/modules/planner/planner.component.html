@@ -48,7 +48,7 @@
                                             <div class="serving" cdkDrag
                                                 (cdkDragStarted)="onDragStarted(plannerDayData.noonServings, $index)"
                                                 (cdkDragDropped)="onDropped($event)">
-                                                <span class="recipe-label">
+                                                <span class="recipe flex gap-2 clickable">
                                                     {{serving.recipeLabel }}
                                                     <fa-icon [icon]="xIcon"
                                                         (click)="removeServingFromDayServingList('noon', $index)"></fa-icon>
@@ -135,4 +135,23 @@
     </div>
 </app-modal>
 
+}
+
+@if (showPlannerResultModal) {
+<app-modal (close)="onPlannerResultModalClose()">
+    <div class="grid recipe-modal">
+        <div class="col-12 card-header">
+            <div class="card-title">Résultat</div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="w-full">
+            <div class="flex flex-column gap-1">
+                <div class="flex">
+                    <span class="formatted-text"> {{plannerResultMessage }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal>
 }

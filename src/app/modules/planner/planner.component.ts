@@ -7,6 +7,7 @@ import { RecipeModel } from "../../models/recipe.model";
 import { getCaloriesForRecipe, getPricesForRecipe } from "../../utils/recipe.utils";
 import { RecipeRepositoryService } from "../../repositories/recipe.service";
 import { memo } from "../../utils/memo.function";
+import { PlannerRepositoryService } from "../../repositories/planner.service";
 
 export interface PlannerDayData {
     dayLabel: string;
@@ -17,7 +18,7 @@ export interface PlannerDayData {
 @Component({
     standalone: true,
     imports: [SharedModule, DragDropModule],
-    providers: [RecipeRepositoryService],
+    providers: [RecipeRepositoryService, PlannerRepositoryService],
     selector: "app-planner",
     templateUrl: "./planner.component.html",
     styleUrls: ["./planner.component.scss"]
@@ -29,6 +30,7 @@ export class PlannerComponent {
     xIcon = faXmark;
 
     private recipeRepositoryService = inject(RecipeRepositoryService);
+    private plannerRepositoryService = inject(PlannerRepositoryService);
     recipes: RecipeModel[] = [];
 
     plannerDayDatas: PlannerDayData[] = [
@@ -103,6 +105,9 @@ export class PlannerComponent {
     });
 
     showRecipeSelectModal = false;
+    showPlannerResultModal = false;
+
+    plannerResultMessage: string | undefined;
 
     availableServings: Serving[] = [];
 
@@ -110,7 +115,11 @@ export class PlannerComponent {
     currentDraggingFrom: Serving[] | undefined;
 
     printOut(): void {
-        // window.print();
+        this.plannerRepositoryService.printPlanner(this.plannerDayDatas).subscribe((result) => {
+            console.log(result);
+            this.plannerResultMessage = result;
+            this.showPlannerResultModal = true;
+        });
     };
 
     onRecipeSelect(recipe: RecipeModel): void {
@@ -124,6 +133,11 @@ export class PlannerComponent {
 
     onModaleClose(): void {
         this.showRecipeSelectModal = false;
+    }
+
+    onPlannerResultModalClose(): void {
+        this.showPlannerResultModal = false;
+        this.plannerResultMessage = undefined;
     }
 
     removeServingFromAvailableServing(index: number): void {
