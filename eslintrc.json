@@ -1,0 +1,113 @@
+{
+    "root": true,
+    "ignorePatterns": ["projects/**/*", "schematics/**"],
+    "globals": {
+      "cy": true,
+      "Cypress": true
+    },
+    "overrides": [
+      {
+        "files": ["*.ts", "*.js"],
+        "parserOptions": {
+          "ecmaVersion": 2017,
+          "project": ["tsconfig.json"],
+          "createDefaultProgram": true
+        },
+        "extends": [
+          "eslint:recommended",
+          "plugin:@angular-eslint/recommended",
+          "plugin:@angular-eslint/ng-cli-compat",
+          "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+          "plugin:@angular-eslint/template/process-inline-templates"
+        ],
+        "rules": {
+          "no-underscore-dangle": "off",
+          "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+          "semi": ["error", "always"],
+          "no-multi-spaces": ["error"],
+          "max-len": [2, { "code": 180, "ignorePattern": "^import .*" }],
+          "@typescript-eslint/member-ordering": "off",
+          "@typescript-eslint/naming-convention": [
+            "warn",
+            {
+              "selector": "enum",
+              "format": ["PascalCase"]
+            }
+          ],
+          "@angular-eslint/component-selector": [
+            "error",
+            {
+              "type": "element",
+              "style": "kebab-case"
+            }
+          ],
+          "@angular-eslint/directive-selector": [
+            "error",
+            {
+              "type": "attribute",
+              "prefix": "app",
+              "style": "camelCase"
+            }
+          ],
+          "linebreak-style": ["error", "unix"]
+        }
+      },
+      {
+        "files": ["*.html"],
+        "extends": ["plugin:@angular-eslint/template/recommended"],
+        "rules": {
+          "@angular-eslint/template/accessibility-label-has-associated-control": [
+            "error",
+            {
+              "labelComponents": [
+                {
+                  "inputs": ["id"],
+                  "selector": "input"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "button"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "a"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "p-autoComplete"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "p-multiSelect"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "p-dropdown"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "p-inputSwitch"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "p-inputNumber"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "p-checkbox"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "p-calendar"
+                },
+                {
+                  "inputs": ["id"],
+                  "selector": "p-editor"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }

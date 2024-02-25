@@ -1,0 +1,46 @@
+<div class="planner-day">
+    <div class="grid">
+        <div class="col-2">
+            <div class="flex flex-column gap-1 planner-day-summary">
+                <div class="flex">
+                    <span class="day-label">
+                        {{data.dayLabel }}
+                    </span>
+                </div>
+                <div class="calories">
+                    <span>
+                        {{getCalories() | number : '1.2-2'}} cal
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div [ngClass]="'{col-4 : {{showMorning}}; col-5 : {{!showMorning}}}'">
+            <!-- Midi -->
+            <div class="serving-receptor">
+                <span class="time-label">Midi</span>
+                @for (serving of data.noonServings; track $index) {
+                <div class="serving">
+                    <span class="recipe-label">
+                        {{serving.recipeLabel }}
+                    </span>
+                    <fa-icon [icon]="xIcon" (click)="removeServing(data.noonServings, $index)"></fa-icon>
+                </div>
+                }
+            </div>
+        </div>
+        <div [ngClass]="'{col-4 : {{showMorning}}; col-5 : {{!showMorning}}}'">
+            <!-- Soir -->
+            <div class="serving-receptor">
+                <span class="time-label">Soir</span>
+                @for (serving of data.eveningServings; track $index) {
+                <div class="serving">
+                    <span class="recipe-label">
+                        {{serving.recipeLabel }}
+                    </span>
+                    <fa-icon [icon]="xIcon" (click)="removeServing(data.noonServings, $index)"></fa-icon>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

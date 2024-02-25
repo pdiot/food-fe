@@ -1,0 +1,35 @@
+@import "variables.scss";
+
+.recipe-list {
+    gap: 1rem;
+}
+
+.recipe {
+    padding: 1rem;
+    background-color: $lighter;
+    border-radius: 1rem;
+}
+
+.recipe-modal {
+    .col-12 {
+        padding-left: 0;
+    }
+}
+
+.portion-list {
+    max-height: 600px;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    padding: 1rem;
+
+    .select-recipe {
+        position: sticky;
+        bottom: 0;
+        background-color: $secondary;
+
+        button {
+            width: 100%;
+        }
+    }
+}

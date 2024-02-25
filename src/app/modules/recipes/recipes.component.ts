@@ -1,14 +1,18 @@
 import { Component, inject } from "@angular/core";
 import { SharedModule } from "../shared/shared.module";
 import { RecipeRepositoryService } from "../../repositories/recipe.service";
-import { BehaviorSubject, Observable, switchMap } from "rxjs";
+import { BehaviorSubject, Observable, debounceTime, startWith, switchMap } from "rxjs";
 import { TagModel } from "../../models/tag.model";
 import { RecipeModel } from "../../models/recipe.model";
-import { faKitchenSet, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faKitchenSet, faPlusCircle, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { DecimalPipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { memo } from "../../utils/memo.function";
+import { FormControl } from "@angular/forms";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { getCaloriesForRecipe, getPricesForRecipe } from "../../utils/recipe.utils";
 
+@UntilDestroy()
 @Component({
     standalone: true,
     imports: [SharedModule],
@@ -19,31 +23,31 @@ import { memo } from "../../utils/memo.function";
 export class RecipesComponent {
 
     getPrice = memo((recipe: RecipeModel): number => {
-        return recipe.ingredients.reduce((acc, ingAsso) =>
-            acc + (ingAsso.ingredient.price ?? 0) * (ingAsso.quantity ?? 0), 0
-        ) / (recipe.servings === 0 ? 1 : recipe.servings);
+        return getPricesForRecipe(recipe);
     });
 
     getCalories = memo((recipe: RecipeModel): number => {
-        return recipe.ingredients.reduce((acc, ingAsso) =>
-            acc + (ingAsso.ingredient.calories ?? 0) * (ingAsso.quantity ?? 0), 0
-        ) / (recipe.servings === 0 ? 1 : recipe.servings);
+        return getCaloriesForRecipe(recipe);
     });
 
     recipesIcon = faKitchenSet;
     plusIcon = faPlusCircle;
     trashIcon = faTrash;
+    searchIcon = faSearch;
 
 
     private recipeRepositoryService = inject(RecipeRepositoryService);
     private router = inject(Router);
     private activatedRoute = inject(ActivatedRoute);
 
-    refreshRecipesSubject = new BehaviorSubject<undefined>(undefined);
-    recipes$?: Observable<RecipeModel[]> = this.refreshRecipesSubject.asObservable().pipe(switchMap(() => this.recipeRepositoryService.getAllRecipes()));
+    refreshRecipesSubject = new BehaviorSubject<string | undefined>(undefined);
+    recipeSearchFormControl = new FormControl<string | undefined>(undefined, { nonNullable: true });
+    recipes$?: Observable<RecipeModel[]> = this.refreshRecipesSubject.asObservable().pipe(switchMap(() => this.recipeRepositoryService.getAllRecipes(this.recipeSearchFormControl.value)));
 
     constructor() {
-        this.loadRecipes();
+        this.recipeSearchFormControl.valueChanges.pipe(untilDestroyed(this), debounceTime(500), startWith(this.recipeSearchFormControl.value)).subscribe((value) => {
+            this.refreshRecipesSubject.next(value);
+        });
     }
 
     addNewRecipe(): void {
@@ -55,7 +59,7 @@ export class RecipesComponent {
     }
 
     loadRecipes(): void {
-        this.refreshRecipesSubject.next(undefined);
+        this.refreshRecipesSubject.next(this.refreshRecipesSubject.value);
     }
 
     deleteRecipe(recipe: RecipeModel): void {

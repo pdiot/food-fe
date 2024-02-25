@@ -1,7 +1,9 @@
 <div class="flex flex-column sidebar secondary-bg h-full p-0 m-0">
     @for (route of routes; track route.label) {
-        <div class="col-12" #sidebar>
-            <div class="flex align-items-center justify-content-left router-link" [routerLink]="route.route">{{route.label}}</div>
+    <div class="col-12" #sidebar>
+        <div class="flex align-items-center justify-content-left router-link" [routerLink]="route.route">{{route.label}}
         </div>
+    </div>
     }
+    <!-- <input type="text" class="col-12" [formControl]="urlState.formControl" /> -->
 </div>

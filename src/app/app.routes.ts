@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './modules/home/home.component';
+import { PlannerComponent } from './modules/planner/planner.component';
 import { TagsComponent } from './modules/tags/tags.component';
 import { IngredientsComponent } from './modules/ingredients/ingredients.component';
 import { RecipesComponent } from './modules/recipes/recipes.component';
@@ -9,10 +9,10 @@ export const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'home',
+        redirectTo: 'planner',
     }, {
-        path: 'home',
-        component: HomeComponent
+        path: 'planner',
+        component: PlannerComponent
     }, {
         path: 'tags',
         component: TagsComponent

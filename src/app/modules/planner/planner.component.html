@@ -1,0 +1,72 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card title-card flex justify-content-left align-items-center gap-2 ">
+            <fa-icon [icon]="plannerIcon"></fa-icon>
+            <p> Planner </p>
+            <div class="flex w-full">
+            </div>
+            <div class="flex justify-content-right align-items-center width-15">
+                <button class="btn btn-primary" (click)="printOut()">
+                    <fa-icon [icon]="printIcon"></fa-icon>
+                    Imprimer
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" #planner>
+        <div class="card">
+            <div class="grid">
+                <!-- Calendrier -->
+                <div class="col-9">
+                    <div class="flex flex-column w-full gap-2">
+                        @for (plannerDayData of plannerDayDatas; track $index) {
+                        <app-planner-day [data]="plannerDayData"></app-planner-day>
+                        }
+                    </div>
+                </div>
+                <!-- Liste des portions -->
+                <div class="col-3 portion-list">
+                    <div class="flex flex-column w-full gap-1">
+                        @for (serving of availableServings; track $index) {
+                        <div class="flex">
+                            <span class="recipe flex gap-2 clickable">
+                                {{serving.recipeLabel }}
+                                <fa-icon [icon]="xIcon" (click)="removeServing($index)"></fa-icon>
+                            </span>
+                        </div>
+                        }
+                        <div class="select-recipe">
+                            <button class="btn btn-primary" (click)="showRecipeModal()">
+                                <fa-icon [icon]="plusIcon"></fa-icon>
+                                Ajouter une recette
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (showRecipeSelectModal) {
+<app-modal (close)="onModaleClose()">
+    <div class="grid recipe-modal">
+        <div class="col-12 card-header">
+            <div class="card-title">Sélectionner une recette</div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="w-full">
+            <!-- Liste des recettes -->
+            <div class="flex flex-column gap-1">
+                @for (recipe of recipes; track $index) {
+                <div class="flex recipe clickable" (click)="onRecipeSelect(recipe)">
+                    <span> {{recipe.label }}</span>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</app-modal>
+
+}

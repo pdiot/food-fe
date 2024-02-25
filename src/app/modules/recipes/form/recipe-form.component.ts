@@ -10,7 +10,6 @@ import { TagRepositoryService } from "../../../repositories/tag.service";
 import { IngredientRepositoryService } from "../../../repositories/ingredient.service";
 import { DropdownModel } from "../../../utils/form.utils";
 import { TagModel } from "../../../models/tag.model";
-import { IDropdownSettings } from "ng-multiselect-dropdown";
 import { TagFormComponent } from "../../tags/form/tag-form.component";
 import { RecipeIngredientAssociationFormComponent } from "../recipe-ingredient-association-form/recipe-ingredient-association-form.component";
 import { IngredientModel } from "../../../models/ingredient.model";
