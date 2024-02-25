@@ -78,6 +78,10 @@ export class RecipeFormComponent {
         }
     }
 
+    onNewTagCreationCanceled(): void {
+        this.creatingNewTag = false;
+    }
+
     onSelectNewTag(): void {
         this.creatingNewTag = true;
     }

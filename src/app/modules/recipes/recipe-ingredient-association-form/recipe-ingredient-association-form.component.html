@@ -37,14 +37,18 @@
     }
     }
     @if (creatingNewIngredient) {
-    <div class="col-12 grid">
-        <!-- TODO transformer ça en modale -->
-        <div class="col-12"> Création d'un nouvel ingrédient</div>
-        <div class="col-12">
-            <app-ingredient-form (saved)="onNewIngredientCreated($event)"
-                (canceled)="resetCreateForm()"></app-ingredient-form>
+
+    <app-modal (close)="onNewIngredientCreationCanceled()">
+        <div class="col-12 grid">
+            <!-- TODO transformer ça en modale -->
+            <div class="col-12"> Création d'un nouvel ingrédient</div>
+            <div class="col-12">
+                <app-ingredient-form (saved)="onNewIngredientCreated($event)"
+                    (canceled)="resetCreateForm()"></app-ingredient-form>
+            </div>
         </div>
-    </div>
+    </app-modal>
+
     }
     }
 

@@ -62,6 +62,11 @@ export class RecipeIngredientAssociationFormComponent {
         this.resetCreateForm();
     }
 
+    onNewIngredientCreationCanceled(): void {
+        this.creatingNewIngredient = false;
+        this.creatingNewIngredientForFormIndex = undefined;
+    }
+
     resetCreateForm() {
         this.creatingNewIngredient = false;
         this.creatingNewIngredientForFormIndex = undefined;

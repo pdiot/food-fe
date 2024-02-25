@@ -40,13 +40,14 @@
                     </div>
                 </div>
                 @if (creatingNewTag) {
-                <div class="col-12 grid">
-                    <!-- TODO transformer ça en modale -->
-                    <div class="col-12"> Création d'un nouveau tag</div>
-                    <div class="col-12">
-                        <app-tag-form (saved)="onNewTagCreated($event)"></app-tag-form>
+                <app-modal (close)="onNewTagCreationCanceled()">
+                    <div class="col-12 grid">
+                        <div class="col-12"> Création d'un nouveau tag</div>
+                        <div class="col-12">
+                            <app-tag-form (saved)="onNewTagCreated($event)"></app-tag-form>
+                        </div>
                     </div>
-                </div>
+                </app-modal>
                 }
             </div>
         </div>
